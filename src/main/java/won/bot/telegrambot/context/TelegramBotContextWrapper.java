@@ -2,7 +2,7 @@ package won.bot.telegrambot.context;
 
 import won.bot.framework.bot.context.BotContext;
 import won.bot.framework.bot.context.BotContextWrapper;
-import won.bot.framework.eventbot.action.impl.mail.model.WonURI;
+import won.bot.telegrambot.util.model.WonURI;
 
 import java.net.URI;
 

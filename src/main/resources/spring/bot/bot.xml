@@ -18,28 +18,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <import resource="classpath:spring/component/nodeurisource/nodeurisource-random.xml"/>
-    <import resource="classpath:spring/component/botContext/botContext.xml"/>
-    <import resource="classpath:/spring/component/atomproducer/atomproducer-mixed.xml"/>
-
     <bean id="telegram2wonBot" class="won.bot.telegrambot.impl.TelegramBot">
-        <!-- optional property, by default one echo atom per each atom will be created -->
-
         <property name="botContextWrapper" ref="botContextWrapper"/>
         <property name="taskScheduler" ref="taskScheduler"/>
         <property name="token" value="${telegram.token}"/>
         <property name="botName" value="${bot.name}"/>
         <property name="telegramContentExtractor" ref="telegramContentExtractor"/>
         <property name="telegramMessageGenerator" ref="telegramGenerator"/>
-        <!--property name="atomProducer" ref="atomProducerFromMails" /-->
+        <property name="atomProducer">
+            <!-- since this bot does not create any atoms from other source, e.g rdf-files, mails etc, adding the NopAtomProducer will suffice, as it is never used -->
+            <bean class="won.bot.framework.component.atomproducer.impl.NopAtomProducer"/>
+        </property>
         <!--property name="nodeURISource" ref="nodeUriSourceRandom" /-->
-        <!--<property name="matcherNodeURISource" ref="matcherNodeURISource"/>-->
-        <!--<property name="matcherUri" value="${matcher.uri}" />-->
-        <!-- expects a bean named "ownerProtocolAtomServiceClient" in the context -->
-        <!--property name="ownerService" ref="ownerProtocolAtomServiceClient" /-->
-        <!--<property name="matcherProtocolAtomServiceClient" ref="matcherProtocolAtomServiceClient"/>-->
-        <!--<property name="matcherProtocolMatcherService" ref="matcherProtocolMatcherServiceJMSBased"/>-->
         <property name="trigger">
             <bean class="org.springframework.scheduling.support.PeriodicTrigger">
                 <constructor-arg name="period" value="6002000"/>
